@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AstraTravel — Agent Portal (demo)</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<h1>AstraTravel <span class="demo-tag">DEMO — synthetic data only</span></h1>
+<p class="sub">B2B travel portal for agencies. Log in with a test account, then
+search &rarr; hold &rarr; book &rarr; pay &rarr; cancel.</p>
+
+<section id="login-box">
+  <h2>1. Log in</h2>
+  <input id="username" placeholder="username (e.g. sky_agent1)">
+  <input id="password" type="password" placeholder="password" value="Test@1234">
+  <button onclick="doLogin()">Log in</button>
+  <p id="login-status"></p>
+  <p class="hint">Test accounts: sky_admin, sky_agent1, sky_agent2, sky_fin,
+  globe_admin, globe_agent1, globe_fin, platform_admin — password
+  <code>Test@1234</code> for all of them.</p>
+</section>
+
+<section id="search-box">
+  <h2>2. Search flights</h2>
+  <input id="from" placeholder="From (e.g. DEL)" value="DEL">
+  <input id="to" placeholder="To (e.g. BOM)" value="BOM">
+  <input id="date" placeholder="Date" value="2026-12-05">
+  <button onclick="doSearch()">Search</button>
+  <ul id="flights"></ul>
+</section>
+
+<section id="book-box">
+  <h2>3. Hold &amp; book</h2>
+  <input id="flight-id" placeholder="Flight (e.g. AI-302)">
+  <input id="pax" type="number" value="2" min="1" max="4">
+  <button onclick="doHold()">Hold seat</button>
+  <p id="hold-status"></p>
+  <input id="total" type="number" placeholder="Total to charge (Rs.)">
+  <button onclick="doBook()">Book (uses the total above)</button>
+  <p id="book-status"></p>
+</section>
+
+<section id="manage-box">
+  <h2>4. Manage a booking</h2>
+  <input id="booking-id" placeholder="Booking (e.g. AST-1001)">
+  <button onclick="doGetBooking()">View booking</button>
+  <button onclick="doPay()">Pay</button>
+  <button onclick="doCancel()">Cancel &amp; refund</button>
+  <input id="coupon" placeholder="Coupon code (e.g. FLY10)">
+  <button onclick="doCoupon()">Apply coupon</button>
+  <pre id="booking-view"></pre>
+</section>
+
+<section id="my-box">
+  <h2>5. My agency's bookings</h2>
+  <button onclick="doListBookings()">List my bookings</button>
+  <ul id="my-bookings"></ul>
+</section>
+
+<p class="foot">AstraTravel demo platform — local only, synthetic data, planted
+vulnerabilities for the DeploySentry hackathon prototype. Version:
+<span id="version">…</span></p>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

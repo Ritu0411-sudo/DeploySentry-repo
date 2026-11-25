@@ -1,0 +1,3 @@
+# DeploySentry needs no third-party packages.
+# Everything is Python 3 standard library only (urllib, json, re, hmac,
+# hashlib, base64, html, argparse, subprocess) — no install step.

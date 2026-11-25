@@ -1,0 +1,58 @@
+{
+  "journeys": [
+    {
+      "name": "search-hold-book-pay (sky_agent1)",
+      "entries": [
+        {
+          "method": "GET",
+          "url": "/search/flights?from=DEL&to=BOM&date=2026-12-05"
+        },
+        {
+          "method": "GET",
+          "url": "/fares/quote?flight_id=AI-302"
+        },
+        {
+          "method": "POST",
+          "url": "/bookings/hold",
+          "body": {
+            "flight_id": "AI-302",
+            "travellers": 2
+          }
+        },
+        {
+          "method": "POST",
+          "url": "/bookings",
+          "body": {
+            "hold_id": "HLD-881",
+            "fare": 10400,
+            "total": 10649
+          }
+        },
+        {
+          "method": "POST",
+          "url": "/bookings/AST-1007/pay",
+          "body": {
+            "amount": 10649,
+            "method": "card"
+          }
+        }
+      ]
+    },
+    {
+      "name": "cancel-refund (globe_agent1)",
+      "entries": [
+        {
+          "method": "GET",
+          "url": "/bookings/AST-1019"
+        },
+        {
+          "method": "POST",
+          "url": "/bookings/AST-1019/cancel",
+          "body": {
+            "reason": "traveller request"
+          }
+        }
+      ]
+    }
+  ]
+}

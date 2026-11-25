@@ -1,0 +1,18 @@
+{
+  "releases": [
+    {
+      "version": "v2.3.0",
+      "deployed_at": "2026-11-01T06:00:00",
+      "notes": "Baseline. Fare engine v3, coupon service, refund flow.",
+      "changed_endpoints": []
+    },
+    {
+      "version": "v2.4.0",
+      "deployed_at": "DEMO_DAY",
+      "notes": "Adds fare-modify endpoint for post-payment fare corrections.",
+      "changed_endpoints": [
+        "POST /v2/bookings/{id}/fare-modify"
+      ]
+    }
+  ]
+}

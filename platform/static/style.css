@@ -1,0 +1,14 @@
+body { font-family: system-ui, sans-serif; max-width: 760px; margin: 2em auto;
+  padding: 0 1em; color: #1a1a1a; }
+h1 { font-size: 1.6em; }
+.demo-tag { font-size: 0.55em; background: #b91c1c; color: #fff; padding:
+  2px 8px; border-radius: 4px; vertical-align: middle; }
+.sub { color: #555; }
+section { border: 1px solid #ddd; border-radius: 8px; padding: 1em;
+  margin-bottom: 1em; }
+h2 { margin-top: 0; font-size: 1.1em; }
+input { padding: 6px; margin: 2px; width: 200px; }
+button { padding: 6px 12px; margin: 2px; cursor: pointer; }
+.hint, .foot { color: #666; font-size: 0.85em; }
+pre { background: #f6f6f6; padding: 0.5em; overflow-x: auto; font-size: 0.85em; }
+ul { cursor: pointer; }

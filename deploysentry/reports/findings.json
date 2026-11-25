@@ -1,0 +1,426 @@
+{
+  "run": {
+    "started_at": "2026-11-25T11:30:40",
+    "target": "http://127.0.0.1:8000",
+    "baseline_version": "v2.3.0",
+    "change_version": "v2.4.0",
+    "auto_approve": true
+  },
+  "timings": {
+    "time_to_detect_s": 0.6,
+    "time_to_verify_s": 1.0,
+    "total_run_s": 16.1
+  },
+  "counts": {
+    "verified": 10,
+    "bonus": 1,
+    "rejected": 0,
+    "precision_pct": 100.0,
+    "controls_passed": 2,
+    "controls_total": 2,
+    "endpoints": 14,
+    "active": 10,
+    "zombie": 1,
+    "shadow": 2,
+    "infra": 1
+  },
+  "findings": [
+    {
+      "title": "Book at Rs. 1 (fare tampering)",
+      "test_id": "fare-tampering",
+      "class": "business-logic",
+      "endpoint": "POST /bookings",
+      "severity": "Critical",
+      "impact": "Direct revenue loss: any agent can book any flight for Rs. 1 by sending a client-supplied total. The fare is money \u2014 trusting the client is trusting the attacker.",
+      "fix": "Recompute fare and total server-side from the hold and fare rules; ignore client-supplied totals.",
+      "owner": "Payments team",
+      "evidence": [
+        "POST /bookings {hold_id, total: 1} -> 200, booking AST-1041 created with total=1",
+        "Server trusted the client-supplied total instead of recomputing the fare"
+      ],
+      "verified_by": "Re-read AST-1041: total=1 stored server-side",
+      "status": "verified",
+      "id": "DS-001"
+    },
+    {
+      "title": "Sub-agent promotes self to agency_admin",
+      "test_id": "privilege-escalation",
+      "class": "access-control",
+      "endpoint": "POST /admin/users/{id}/role",
+      "severity": "Critical",
+      "impact": "Full agency takeover: any sub-agent can promote herself to agency_admin and then change other users, bookings and refunds. One request breaks the whole role model.",
+      "fix": "Require platform_admin (or the agency's own admin) on the role endpoint, and audit every role change.",
+      "owner": "IAM team",
+      "evidence": [
+        "sky_agent2 (sub_agent) POST /admin/users/sky_agent2/role {role: agency_admin} -> 200",
+        "Response role=agency_admin \u2014 the endpoint never checked the caller's role"
+      ],
+      "verified_by": "Fresh login as sky_agent2: token claims role=agency_admin; role restored to sub_agent",
+      "status": "verified",
+      "id": "DS-002"
+    },
+    {
+      "title": "Cancel twice, refunded twice",
+      "test_id": "double-refund",
+      "class": "business-logic",
+      "endpoint": "POST /bookings/{id}/cancel",
+      "severity": "High",
+      "impact": "Direct revenue loss: cancelling the same booking twice pays the refund twice. A cancel-rebook loop can drain money on every trip.",
+      "fix": "Make refunds idempotent \u2014 one refund per booking \u2014 and record the refund before returning success.",
+      "owner": "Payments team",
+      "evidence": [
+        "Booking AST-1043 (total 10400): 1st cancel -> refunds_issued=1, 2nd cancel -> refunds_issued=2",
+        "The endpoint never checks whether a refund was already issued"
+      ],
+      "verified_by": "Booking record shows 2 refunds of Rs. 10400 each",
+      "status": "verified",
+      "id": "DS-003"
+    },
+    {
+      "title": "Cross-agency booking read (IDOR)",
+      "test_id": "idor-read",
+      "class": "access-control",
+      "endpoint": "GET /bookings/{id}",
+      "severity": "High",
+      "impact": "Any agency's agent can read any other agency's bookings, including traveller names and passport numbers. Cross-agency data exposure; a trust and compliance failure for a B2B platform.",
+      "fix": "Enforce the agency-ownership check on GET /bookings/{id} (same check the list endpoint already has).",
+      "owner": "API team",
+      "evidence": [
+        "sky_agent1 (ag_skyways) GET /bookings/AST-1004 -> 200",
+        "Response agency_id=ag_globetrek, 2 travellers returned (names/passports withheld from evidence)"
+      ],
+      "verified_by": "sky_agent2 read a second GlobeTrek booking (AST-1005) -> 200; agency_id in response = ag_globetrek",
+      "status": "verified",
+      "id": "DS-004"
+    },
+    {
+      "title": "Cross-agency fare rewrite (fresh IDOR, v2.4.0)",
+      "test_id": "fare-modify-idor",
+      "class": "access-control",
+      "endpoint": "POST /v2/bookings/{id}/fare-modify",
+      "severity": "High",
+      "impact": "A brand-new endpoint shipped with no agency-ownership check: any agency can rewrite another agency's booking fare after payment. This is the change the agent caught within minutes of the deploy.",
+      "fix": "Add the same agency-ownership check as the other booking endpoints, and add the endpoint to the API inventory.",
+      "owner": "API team",
+      "evidence": [
+        "sky_agent1 (ag_skyways) POST /v2/bookings/AST-1004/fare-modify {new_fare: 5} -> 200",
+        "Response fare=5 on a GlobeTrek booking \u2014 no agency-ownership check on the new endpoint"
+      ],
+      "verified_by": "Re-read AST-1004: fare=5 stored server-side",
+      "status": "closed \u2014 fixed by rollback (retest passed)",
+      "id": "DS-005"
+    },
+    {
+      "title": "Forged JWT accepted (weak secret)",
+      "test_id": "forged-jwt",
+      "class": "auth",
+      "endpoint": "GET /bookings/{id}",
+      "severity": "High",
+      "impact": "The JWT signing secret is a guessable word ('travel123'). Anyone who guesses it can mint a token for any user, including platform_admin \u2014 full authentication bypass, no password needed.",
+      "fix": "Rotate the secret to a long random value from the vault, and invalidate all tokens issued under the old secret.",
+      "owner": "IAM team",
+      "evidence": [
+        "A token minted with secret 'travel123' for platform_admin was accepted (200)",
+        "Anyone who guesses the weak secret can mint any identity \u2014 no password needed"
+      ],
+      "verified_by": "Wrong-secret token -> 401 (expected 401); forged token with 'travel123' -> 200 (expected 200)",
+      "status": "verified",
+      "id": "DS-006"
+    },
+    {
+      "title": "Pay Rs. 0 marks booking PAID (bonus)",
+      "test_id": "pay-zero",
+      "class": "business-logic",
+      "endpoint": "POST /bookings/{id}/pay",
+      "severity": "High",
+      "impact": "Skipped payment: paying Rs. 0 marks a booking PAID. The payment step can be walked past, so bookings can be confirmed without any money moving.",
+      "fix": "Validate the paid amount against the booking total server-side; reject zero and under-payments.",
+      "owner": "Payments team",
+      "evidence": [
+        "POST /bookings/AST-1044/pay {amount: 0} -> 200, status=PAID, paid_amount=0",
+        "The endpoint never checks the amount against the total"
+      ],
+      "verified_by": "Re-read AST-1044: status=PAID, paid_amount=0",
+      "status": "verified",
+      "id": "DS-007"
+    },
+    {
+      "title": "Zombie API serves PII without auth",
+      "test_id": "zombie-unauth",
+      "class": "zombie-api",
+      "endpoint": "GET /v1/bookings/{id}",
+      "severity": "High",
+      "impact": "An old, forgotten endpoint still serves full booking PII with no authentication at all. Anyone on the internet can read traveller data; it has had zero legitimate traffic in 30 days.",
+      "fix": "Decommission GET /v1/bookings/{id} immediately; remove the route and confirm no client still calls it.",
+      "owner": "API team",
+      "evidence": [
+        "GET /v1/bookings/AST-1004 with NO token -> 200",
+        "Full booking returned, 2 travellers with PII (withheld from evidence)"
+      ],
+      "verified_by": "GET /v1/bookings/AST-1005 with no token -> 200, PII returned",
+      "status": "verified",
+      "id": "DS-008"
+    },
+    {
+      "title": "Shadow API accepts calls with no authorisation check",
+      "test_id": "shadow-undocumented",
+      "class": "shadow-api",
+      "endpoint": "POST /internal/supplier-sync",
+      "severity": "Medium",
+      "impact": "An undocumented route is live and does no authorisation beyond 'has a token'. It is in real traffic, so it is load-bearing \u2014 but nobody owns it, and nobody reviewed it.",
+      "fix": "Document the route, restrict it to service accounts, and add it to the API inventory with an owner.",
+      "owner": "Platform team",
+      "evidence": [
+        "POST /internal/supplier-sync as sky_agent1 (sub_agent) -> 200, status=synced",
+        "Route is undocumented, never in the discovered map, yet performs no authorisation beyond 'has a token'"
+      ],
+      "verified_by": "Repeat call -> 200 synced; route is live and undocumented",
+      "status": "verified",
+      "id": "DS-009"
+    },
+    {
+      "title": "Single-use coupon applied twice",
+      "test_id": "coupon-reuse",
+      "class": "business-logic",
+      "endpoint": "POST /coupons/apply",
+      "severity": "Medium",
+      "impact": "Revenue leakage: single-use coupons can be applied repeatedly to the same booking, stacking discounts the pricing team never approved.",
+      "fix": "Mark a single-use coupon used after its first successful application; enforce it in the database, not in the UI.",
+      "owner": "Pricing team",
+      "evidence": [
+        "FLY10 applied to AST-1042: 1st use -> total 9360, 2nd use -> total 8424, times_applied=2",
+        "Single-use coupon was never marked used"
+      ],
+      "verified_by": "Booking record shows FLY10 applied 2x",
+      "status": "verified",
+      "id": "DS-010"
+    },
+    {
+      "title": "No rate limiting on login",
+      "test_id": "no-rate-limit",
+      "class": "api-hygiene",
+      "endpoint": "POST /auth/login",
+      "severity": "Low",
+      "impact": "Login accepts unlimited attempts with no throttling or lockout, so passwords can be guessed at full speed. Low on its own \u2014 it needs a further attack to matter \u2014 but it must be fixed.",
+      "fix": "Rate-limit login (and coupon) attempts per account and IP, and add a short lockout after repeated failures.",
+      "owner": "API team",
+      "evidence": [
+        "20 failed logins in a row: statuses [401], no 429 anywhere",
+        "Unlimited guessing is possible \u2014 no throttling, no lockout"
+      ],
+      "verified_by": "Recorded burst: 20 attempts, statuses [401], no 429",
+      "status": "verified",
+      "id": "DS-011"
+    }
+  ],
+  "rejected": [],
+  "controls": [
+    {
+      "test_id": "control-list-filter",
+      "control": true,
+      "passed": true,
+      "detail": "sky_agent1 listing ag_globetrek -> 403 (expected 403)"
+    },
+    {
+      "test_id": "control-search-auth",
+      "control": true,
+      "passed": true,
+      "detail": "logged-in 200 (2 results), anonymous 401 (expected 401)"
+    }
+  ],
+  "skipped": [],
+  "clean": [],
+  "inventory": [
+    {
+      "method": "GET",
+      "path": "/bookings",
+      "source": "js",
+      "auth": "jwt",
+      "label": "active",
+      "traffic_count": 1917,
+      "last_seen": "2026-11-24T23:46:00",
+      "data_exposed": "Booking list for one agency (JWT required)",
+      "owner": "API team",
+      "recommendation": "Keep \u2014 monitored."
+    },
+    {
+      "method": "GET",
+      "path": "/bookings/{id}",
+      "source": "js+har",
+      "auth": "jwt",
+      "label": "active",
+      "traffic_count": 798,
+      "last_seen": "2026-11-24T23:24:14",
+      "data_exposed": "Booking detail + traveller PII (JWT required)",
+      "owner": "API team",
+      "recommendation": "Keep \u2014 monitored."
+    },
+    {
+      "method": "GET",
+      "path": "/demo/releases",
+      "source": "js",
+      "auth": "none",
+      "label": "n/a",
+      "traffic_count": 0,
+      "last_seen": null,
+      "data_exposed": "\u2014",
+      "owner": "Platform team",
+      "recommendation": "Infrastructure endpoint \u2014 not part of the business API inventory; not expected in gateway traffic."
+    },
+    {
+      "method": "GET",
+      "path": "/fares/quote",
+      "source": "har",
+      "auth": "jwt",
+      "label": "active",
+      "traffic_count": 7452,
+      "last_seen": "2026-11-24T23:54:13",
+      "data_exposed": "Fare + markup, no PII",
+      "owner": "Pricing team",
+      "recommendation": "Keep \u2014 monitored."
+    },
+    {
+      "method": "GET",
+      "path": "/search/flights",
+      "source": "js+har",
+      "auth": "jwt",
+      "label": "active",
+      "traffic_count": 11236,
+      "last_seen": "2026-11-24T23:54:39",
+      "data_exposed": "Flight list, no PII",
+      "owner": "API team",
+      "recommendation": "Keep \u2014 monitored."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/bookings/{id}",
+      "source": "probe",
+      "auth": "none",
+      "label": "zombie",
+      "traffic_count": 0,
+      "last_seen": null,
+      "data_exposed": "Booking detail + traveller PII (NO auth)",
+      "owner": "API team",
+      "recommendation": "Decommission \u2014 still live with zero legitimate traffic in 30 days."
+    },
+    {
+      "method": "POST",
+      "path": "/admin/users/{id}/role",
+      "source": "probe",
+      "auth": "jwt",
+      "label": "shadow",
+      "traffic_count": 38,
+      "last_seen": "2026-11-24T12:02:12",
+      "data_exposed": "User roles (JWT required)",
+      "owner": "IAM team",
+      "recommendation": "Restrict to service accounts, document it, or decommission \u2014 in use but never mapped."
+    },
+    {
+      "method": "POST",
+      "path": "/auth/login",
+      "source": "js",
+      "auth": "none",
+      "label": "active",
+      "traffic_count": 1858,
+      "last_seen": "2026-11-24T23:58:53",
+      "data_exposed": "\u2014",
+      "owner": "IAM team",
+      "recommendation": "Keep \u2014 monitored."
+    },
+    {
+      "method": "POST",
+      "path": "/bookings",
+      "source": "js+har",
+      "auth": "jwt",
+      "label": "active",
+      "traffic_count": 4524,
+      "last_seen": "2026-11-24T23:59:48",
+      "data_exposed": "Booking list for one agency (JWT required)",
+      "owner": "API team",
+      "recommendation": "Keep \u2014 monitored."
+    },
+    {
+      "method": "POST",
+      "path": "/bookings/hold",
+      "source": "js+har",
+      "auth": "jwt",
+      "label": "active",
+      "traffic_count": 3636,
+      "last_seen": "2026-11-24T23:58:02",
+      "data_exposed": "\u2014",
+      "owner": "API team",
+      "recommendation": "Keep \u2014 monitored."
+    },
+    {
+      "method": "POST",
+      "path": "/bookings/{id}/cancel",
+      "source": "js+har",
+      "auth": "jwt",
+      "label": "active",
+      "traffic_count": 1896,
+      "last_seen": "2026-11-24T23:39:52",
+      "data_exposed": "\u2014",
+      "owner": "API team",
+      "recommendation": "Keep \u2014 monitored."
+    },
+    {
+      "method": "POST",
+      "path": "/bookings/{id}/pay",
+      "source": "js+har",
+      "auth": "jwt",
+      "label": "active",
+      "traffic_count": 3705,
+      "last_seen": "2026-11-24T23:51:17",
+      "data_exposed": "\u2014",
+      "owner": "API team",
+      "recommendation": "Keep \u2014 monitored."
+    },
+    {
+      "method": "POST",
+      "path": "/coupons/apply",
+      "source": "js",
+      "auth": "jwt",
+      "label": "active",
+      "traffic_count": 1871,
+      "last_seen": "2026-11-24T23:07:11",
+      "data_exposed": "\u2014",
+      "owner": "Pricing team",
+      "recommendation": "Keep \u2014 monitored."
+    },
+    {
+      "method": "POST",
+      "path": "/internal/supplier-sync",
+      "source": "probe",
+      "auth": "jwt",
+      "label": "shadow",
+      "traffic_count": 365,
+      "last_seen": "2026-11-24T22:05:25",
+      "data_exposed": "Supplier inventory (JWT required)",
+      "owner": "Platform team",
+      "recommendation": "Restrict to service accounts, document it, or decommission \u2014 in use but never mapped."
+    }
+  ],
+  "change_events": [
+    {
+      "type": "version-change",
+      "from": "v2.3.0",
+      "to": "v2.4.0",
+      "changed_endpoints": [
+        "POST /v2/bookings/{id}/fare-modify"
+      ],
+      "notes": "Adds fare-modify endpoint for post-payment fare corrections."
+    }
+  ],
+  "retest": [
+    {
+      "finding": "fare-modify-idor",
+      "result": "closed",
+      "detail": "After rollback to v2.3.0 the endpoint returns 404 \u2014 the flaw no longer reproduces. Finding closed."
+    },
+    {
+      "finding": "control-list-filter",
+      "result": "still-enforced",
+      "detail": "List filter after rollback: 403 (expected 403)"
+    }
+  ]
+}

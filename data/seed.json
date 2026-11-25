@@ -1,0 +1,901 @@
+{
+  "agencies": [
+    {
+      "id": "ag_skyways",
+      "name": "SkyWays Travel"
+    },
+    {
+      "id": "ag_globetrek",
+      "name": "GlobeTrek Holidays"
+    }
+  ],
+  "users": [
+    {
+      "username": "sky_admin",
+      "agency_id": "ag_skyways",
+      "role": "agency_admin"
+    },
+    {
+      "username": "sky_agent1",
+      "agency_id": "ag_skyways",
+      "role": "sub_agent"
+    },
+    {
+      "username": "sky_agent2",
+      "agency_id": "ag_skyways",
+      "role": "sub_agent"
+    },
+    {
+      "username": "sky_fin",
+      "agency_id": "ag_skyways",
+      "role": "finance"
+    },
+    {
+      "username": "globe_admin",
+      "agency_id": "ag_globetrek",
+      "role": "agency_admin"
+    },
+    {
+      "username": "globe_agent1",
+      "agency_id": "ag_globetrek",
+      "role": "sub_agent"
+    },
+    {
+      "username": "globe_fin",
+      "agency_id": "ag_globetrek",
+      "role": "finance"
+    },
+    {
+      "username": "platform_admin",
+      "agency_id": null,
+      "role": "platform_admin"
+    }
+  ],
+  "flights": [
+    {
+      "flight_id": "AI-302",
+      "from": "DEL",
+      "to": "BOM",
+      "base_fare": 5200
+    },
+    {
+      "flight_id": "6E-441",
+      "from": "DEL",
+      "to": "BLR",
+      "base_fare": 4800
+    },
+    {
+      "flight_id": "UK-933",
+      "from": "BOM",
+      "to": "DXB",
+      "base_fare": 14500
+    },
+    {
+      "flight_id": "AI-111",
+      "from": "DEL",
+      "to": "LHR",
+      "base_fare": 42000
+    },
+    {
+      "flight_id": "6E-208",
+      "from": "BLR",
+      "to": "SIN",
+      "base_fare": 12800
+    },
+    {
+      "flight_id": "SG-512",
+      "from": "DEL",
+      "to": "GOI",
+      "base_fare": 3900
+    },
+    {
+      "flight_id": "AI-864",
+      "from": "MAA",
+      "to": "DEL",
+      "base_fare": 5600
+    },
+    {
+      "flight_id": "UK-707",
+      "from": "HYD",
+      "to": "BOM",
+      "base_fare": 4100
+    },
+    {
+      "flight_id": "6E-318",
+      "from": "CCU",
+      "to": "DEL",
+      "base_fare": 6100
+    },
+    {
+      "flight_id": "AI-540",
+      "from": "BOM",
+      "to": "COK",
+      "base_fare": 4700
+    },
+    {
+      "flight_id": "SG-901",
+      "from": "DEL",
+      "to": "KTM",
+      "base_fare": 9800
+    },
+    {
+      "flight_id": "UK-122",
+      "from": "BLR",
+      "to": "MAA",
+      "base_fare": 2900
+    }
+  ],
+  "bookings": [
+    {
+      "id": "AST-1001",
+      "agency_id": "ag_skyways",
+      "flight_id": "AI-302",
+      "travellers": [
+        {
+          "name": "Arjun Das",
+          "passport": "X4744854"
+        },
+        {
+          "name": "Kabir Khan",
+          "passport": "X2458591"
+        },
+        {
+          "name": "Tara Patel",
+          "passport": "X1499914"
+        }
+      ],
+      "fare": 15600,
+      "total": 15600,
+      "status": "CONFIRMED",
+      "created": "2026-11-02T16:00:00"
+    },
+    {
+      "id": "AST-1002",
+      "agency_id": "ag_skyways",
+      "flight_id": "6E-318",
+      "travellers": [
+        {
+          "name": "Tara Das",
+          "passport": "X8536477"
+        }
+      ],
+      "fare": 6100,
+      "total": 6599,
+      "status": "CONFIRMED",
+      "created": "2026-11-20T00:00:00"
+    },
+    {
+      "id": "AST-1003",
+      "agency_id": "ag_skyways",
+      "flight_id": "UK-122",
+      "travellers": [
+        {
+          "name": "Dev Mehta",
+          "passport": "X3608513"
+        },
+        {
+          "name": "Vikram Singh",
+          "passport": "X2714803"
+        }
+      ],
+      "fare": 5800,
+      "total": 5800,
+      "status": "CANCELLED",
+      "created": "2026-10-29T11:00:00"
+    },
+    {
+      "id": "AST-1004",
+      "agency_id": "ag_globetrek",
+      "flight_id": "AI-540",
+      "travellers": [
+        {
+          "name": "Meera Rao",
+          "passport": "X9996414"
+        },
+        {
+          "name": "Priya Menon",
+          "passport": "X2322047"
+        }
+      ],
+      "fare": 9400,
+      "total": 9899,
+      "status": "CONFIRMED",
+      "created": "2026-11-21T20:00:00"
+    },
+    {
+      "id": "AST-1005",
+      "agency_id": "ag_globetrek",
+      "flight_id": "AI-540",
+      "travellers": [
+        {
+          "name": "Rohan Patel",
+          "passport": "X4823498"
+        }
+      ],
+      "fare": 4700,
+      "total": 4950,
+      "status": "CONFIRMED",
+      "created": "2026-11-22T07:00:00"
+    },
+    {
+      "id": "AST-1006",
+      "agency_id": "ag_skyways",
+      "flight_id": "AI-864",
+      "travellers": [
+        {
+          "name": "Yash Chopra",
+          "passport": "X3728882"
+        },
+        {
+          "name": "Isha Chopra",
+          "passport": "X4514944"
+        }
+      ],
+      "fare": 11200,
+      "total": 11699,
+      "status": "CONFIRMED",
+      "created": "2026-11-17T21:00:00"
+    },
+    {
+      "id": "AST-1007",
+      "agency_id": "ag_skyways",
+      "flight_id": "AI-540",
+      "travellers": [
+        {
+          "name": "Ananya Das",
+          "passport": "X3741438"
+        },
+        {
+          "name": "Yash Menon",
+          "passport": "X5528972"
+        },
+        {
+          "name": "Sana Singh",
+          "passport": "X1938483"
+        }
+      ],
+      "fare": 14100,
+      "total": 14100,
+      "status": "CONFIRMED",
+      "created": "2026-11-20T10:00:00"
+    },
+    {
+      "id": "AST-1008",
+      "agency_id": "ag_globetrek",
+      "flight_id": "6E-208",
+      "travellers": [
+        {
+          "name": "Vikram Singh",
+          "passport": "X4567281"
+        }
+      ],
+      "fare": 12800,
+      "total": 13299,
+      "status": "CANCELLED",
+      "created": "2026-11-07T20:00:00"
+    },
+    {
+      "id": "AST-1009",
+      "agency_id": "ag_globetrek",
+      "flight_id": "UK-933",
+      "travellers": [
+        {
+          "name": "Kabir Das",
+          "passport": "X5408072"
+        },
+        {
+          "name": "Tara Menon",
+          "passport": "X7073292"
+        }
+      ],
+      "fare": 29000,
+      "total": 29000,
+      "status": "CONFIRMED",
+      "created": "2026-11-11T15:00:00"
+    },
+    {
+      "id": "AST-1010",
+      "agency_id": "ag_skyways",
+      "flight_id": "AI-302",
+      "travellers": [
+        {
+          "name": "Kabir Nair",
+          "passport": "X8082668"
+        }
+      ],
+      "fare": 5200,
+      "total": 5699,
+      "status": "CONFIRMED",
+      "created": "2026-11-07T12:00:00"
+    },
+    {
+      "id": "AST-1011",
+      "agency_id": "ag_globetrek",
+      "flight_id": "6E-318",
+      "travellers": [
+        {
+          "name": "Aarav Khan",
+          "passport": "X5476583"
+        },
+        {
+          "name": "Dev Khan",
+          "passport": "X5924115"
+        }
+      ],
+      "fare": 12200,
+      "total": 12450,
+      "status": "CONFIRMED",
+      "created": "2026-11-09T00:00:00"
+    },
+    {
+      "id": "AST-1012",
+      "agency_id": "ag_globetrek",
+      "flight_id": "6E-318",
+      "travellers": [
+        {
+          "name": "Priya Joshi",
+          "passport": "X9517169"
+        }
+      ],
+      "fare": 6100,
+      "total": 6599,
+      "status": "CONFIRMED",
+      "created": "2026-10-30T11:00:00"
+    },
+    {
+      "id": "AST-1013",
+      "agency_id": "ag_skyways",
+      "flight_id": "6E-318",
+      "travellers": [
+        {
+          "name": "Aarav Singh",
+          "passport": "X9197443"
+        },
+        {
+          "name": "Aarav Khan",
+          "passport": "X7089806"
+        },
+        {
+          "name": "Neha Das",
+          "passport": "X1971823"
+        }
+      ],
+      "fare": 18300,
+      "total": 18300,
+      "status": "REFUNDED",
+      "created": "2026-10-28T02:00:00"
+    },
+    {
+      "id": "AST-1014",
+      "agency_id": "ag_globetrek",
+      "flight_id": "6E-441",
+      "travellers": [
+        {
+          "name": "Kabir Gupta",
+          "passport": "X8973915"
+        },
+        {
+          "name": "Ananya Mehta",
+          "passport": "X9852897"
+        },
+        {
+          "name": "Tara Reddy",
+          "passport": "X4374754"
+        }
+      ],
+      "fare": 14400,
+      "total": 14899,
+      "status": "CONFIRMED",
+      "created": "2026-11-07T21:00:00"
+    },
+    {
+      "id": "AST-1015",
+      "agency_id": "ag_globetrek",
+      "flight_id": "UK-707",
+      "travellers": [
+        {
+          "name": "Yash Khan",
+          "passport": "X5159166"
+        },
+        {
+          "name": "Sana Iyer",
+          "passport": "X6672134"
+        },
+        {
+          "name": "Aarav Das",
+          "passport": "X4694634"
+        }
+      ],
+      "fare": 12300,
+      "total": 12300,
+      "status": "CONFIRMED",
+      "created": "2026-11-17T20:00:00"
+    },
+    {
+      "id": "AST-1016",
+      "agency_id": "ag_skyways",
+      "flight_id": "AI-111",
+      "travellers": [
+        {
+          "name": "Meera Singh",
+          "passport": "X2188789"
+        }
+      ],
+      "fare": 42000,
+      "total": 42499,
+      "status": "CONFIRMED",
+      "created": "2026-11-03T21:00:00"
+    },
+    {
+      "id": "AST-1017",
+      "agency_id": "ag_globetrek",
+      "flight_id": "AI-111",
+      "travellers": [
+        {
+          "name": "Kabir Gill",
+          "passport": "X5076817"
+        },
+        {
+          "name": "Nia Bose",
+          "passport": "X4194548"
+        },
+        {
+          "name": "Priya Khan",
+          "passport": "X8231838"
+        }
+      ],
+      "fare": 126000,
+      "total": 126250,
+      "status": "CANCELLED",
+      "created": "2026-11-08T14:00:00"
+    },
+    {
+      "id": "AST-1018",
+      "agency_id": "ag_skyways",
+      "flight_id": "SG-901",
+      "travellers": [
+        {
+          "name": "Priya Patel",
+          "passport": "X7754864"
+        },
+        {
+          "name": "Dev Khan",
+          "passport": "X5171761"
+        },
+        {
+          "name": "Vikram Reddy",
+          "passport": "X9997381"
+        }
+      ],
+      "fare": 29400,
+      "total": 29650,
+      "status": "CONFIRMED",
+      "created": "2026-11-08T05:00:00"
+    },
+    {
+      "id": "AST-1019",
+      "agency_id": "ag_globetrek",
+      "flight_id": "UK-707",
+      "travellers": [
+        {
+          "name": "Rohan Rao",
+          "passport": "X2642635"
+        }
+      ],
+      "fare": 4100,
+      "total": 4100,
+      "status": "HELD",
+      "created": "2026-11-12T00:00:00"
+    },
+    {
+      "id": "AST-1020",
+      "agency_id": "ag_skyways",
+      "flight_id": "AI-111",
+      "travellers": [
+        {
+          "name": "Tara Gill",
+          "passport": "X9075854"
+        }
+      ],
+      "fare": 42000,
+      "total": 42000,
+      "status": "CANCELLED",
+      "created": "2026-11-23T01:00:00"
+    },
+    {
+      "id": "AST-1021",
+      "agency_id": "ag_skyways",
+      "flight_id": "AI-864",
+      "travellers": [
+        {
+          "name": "Manav Mehta",
+          "passport": "X8633773"
+        }
+      ],
+      "fare": 5600,
+      "total": 5850,
+      "status": "CANCELLED",
+      "created": "2026-11-17T23:00:00"
+    },
+    {
+      "id": "AST-1022",
+      "agency_id": "ag_globetrek",
+      "flight_id": "UK-933",
+      "travellers": [
+        {
+          "name": "Neha Reddy",
+          "passport": "X1981186"
+        }
+      ],
+      "fare": 14500,
+      "total": 14999,
+      "status": "HELD",
+      "created": "2026-11-12T01:00:00"
+    },
+    {
+      "id": "AST-1023",
+      "agency_id": "ag_globetrek",
+      "flight_id": "AI-302",
+      "travellers": [
+        {
+          "name": "Nia Nair",
+          "passport": "X1954280"
+        }
+      ],
+      "fare": 5200,
+      "total": 5699,
+      "status": "CONFIRMED",
+      "created": "2026-11-22T05:00:00"
+    },
+    {
+      "id": "AST-1024",
+      "agency_id": "ag_skyways",
+      "flight_id": "AI-540",
+      "travellers": [
+        {
+          "name": "Sana Menon",
+          "passport": "X3011363"
+        }
+      ],
+      "fare": 4700,
+      "total": 5199,
+      "status": "CONFIRMED",
+      "created": "2026-11-13T19:00:00"
+    },
+    {
+      "id": "AST-1025",
+      "agency_id": "ag_skyways",
+      "flight_id": "AI-540",
+      "travellers": [
+        {
+          "name": "Tara Singh",
+          "passport": "X5374922"
+        }
+      ],
+      "fare": 4700,
+      "total": 4700,
+      "status": "HELD",
+      "created": "2026-11-17T10:00:00"
+    },
+    {
+      "id": "AST-1026",
+      "agency_id": "ag_skyways",
+      "flight_id": "6E-208",
+      "travellers": [
+        {
+          "name": "Kabir Joshi",
+          "passport": "X8670955"
+        },
+        {
+          "name": "Dev Iyer",
+          "passport": "X1156287"
+        }
+      ],
+      "fare": 25600,
+      "total": 25850,
+      "status": "REFUNDED",
+      "created": "2026-11-13T03:00:00"
+    },
+    {
+      "id": "AST-1027",
+      "agency_id": "ag_skyways",
+      "flight_id": "6E-318",
+      "travellers": [
+        {
+          "name": "Arjun Gupta",
+          "passport": "X6855396"
+        }
+      ],
+      "fare": 6100,
+      "total": 6100,
+      "status": "CONFIRMED",
+      "created": "2026-11-06T09:00:00"
+    },
+    {
+      "id": "AST-1028",
+      "agency_id": "ag_skyways",
+      "flight_id": "UK-707",
+      "travellers": [
+        {
+          "name": "Neha Sharma",
+          "passport": "X6022741"
+        },
+        {
+          "name": "Priya Gupta",
+          "passport": "X5437001"
+        },
+        {
+          "name": "Priya Khan",
+          "passport": "X3607983"
+        }
+      ],
+      "fare": 12300,
+      "total": 12550,
+      "status": "CONFIRMED",
+      "created": "2026-11-14T06:00:00"
+    },
+    {
+      "id": "AST-1029",
+      "agency_id": "ag_globetrek",
+      "flight_id": "AI-111",
+      "travellers": [
+        {
+          "name": "Arjun Gill",
+          "passport": "X5213115"
+        },
+        {
+          "name": "Meera Iyer",
+          "passport": "X8106422"
+        },
+        {
+          "name": "Arjun Patel",
+          "passport": "X1059486"
+        }
+      ],
+      "fare": 126000,
+      "total": 126250,
+      "status": "CONFIRMED",
+      "created": "2026-11-15T08:00:00"
+    },
+    {
+      "id": "AST-1030",
+      "agency_id": "ag_skyways",
+      "flight_id": "UK-122",
+      "travellers": [
+        {
+          "name": "Tara Sharma",
+          "passport": "X2876932"
+        },
+        {
+          "name": "Rohan Gupta",
+          "passport": "X1604451"
+        }
+      ],
+      "fare": 5800,
+      "total": 6050,
+      "status": "REFUNDED",
+      "created": "2026-11-12T04:00:00"
+    },
+    {
+      "id": "AST-1031",
+      "agency_id": "ag_globetrek",
+      "flight_id": "UK-933",
+      "travellers": [
+        {
+          "name": "Neha Chopra",
+          "passport": "X1669324"
+        }
+      ],
+      "fare": 14500,
+      "total": 14750,
+      "status": "CONFIRMED",
+      "created": "2026-11-16T07:00:00"
+    },
+    {
+      "id": "AST-1032",
+      "agency_id": "ag_skyways",
+      "flight_id": "SG-512",
+      "travellers": [
+        {
+          "name": "Tara Gupta",
+          "passport": "X4971793"
+        },
+        {
+          "name": "Ananya Nair",
+          "passport": "X7917152"
+        },
+        {
+          "name": "Aarav Nair",
+          "passport": "X6573147"
+        }
+      ],
+      "fare": 11700,
+      "total": 11950,
+      "status": "HELD",
+      "created": "2026-11-22T23:00:00"
+    },
+    {
+      "id": "AST-1033",
+      "agency_id": "ag_skyways",
+      "flight_id": "6E-208",
+      "travellers": [
+        {
+          "name": "Priya Menon",
+          "passport": "X1649691"
+        }
+      ],
+      "fare": 12800,
+      "total": 13050,
+      "status": "CONFIRMED",
+      "created": "2026-11-01T14:00:00"
+    },
+    {
+      "id": "AST-1034",
+      "agency_id": "ag_globetrek",
+      "flight_id": "6E-208",
+      "travellers": [
+        {
+          "name": "Sana Sharma",
+          "passport": "X4240180"
+        }
+      ],
+      "fare": 12800,
+      "total": 13050,
+      "status": "CONFIRMED",
+      "created": "2026-11-03T02:00:00"
+    },
+    {
+      "id": "AST-1035",
+      "agency_id": "ag_globetrek",
+      "flight_id": "SG-512",
+      "travellers": [
+        {
+          "name": "Manav Singh",
+          "passport": "X1463060"
+        },
+        {
+          "name": "Priya Mehta",
+          "passport": "X3995870"
+        },
+        {
+          "name": "Arjun Patel",
+          "passport": "X2818692"
+        }
+      ],
+      "fare": 11700,
+      "total": 12199,
+      "status": "CANCELLED",
+      "created": "2026-11-06T23:00:00"
+    },
+    {
+      "id": "AST-1036",
+      "agency_id": "ag_globetrek",
+      "flight_id": "AI-864",
+      "travellers": [
+        {
+          "name": "Priya Menon",
+          "passport": "X4188992"
+        },
+        {
+          "name": "Arjun Patel",
+          "passport": "X8315831"
+        },
+        {
+          "name": "Aarav Reddy",
+          "passport": "X7110622"
+        }
+      ],
+      "fare": 16800,
+      "total": 17050,
+      "status": "CONFIRMED",
+      "created": "2026-11-16T10:00:00"
+    },
+    {
+      "id": "AST-1037",
+      "agency_id": "ag_globetrek",
+      "flight_id": "SG-901",
+      "travellers": [
+        {
+          "name": "Neha Joshi",
+          "passport": "X7851696"
+        }
+      ],
+      "fare": 9800,
+      "total": 10050,
+      "status": "CANCELLED",
+      "created": "2026-11-17T09:00:00"
+    },
+    {
+      "id": "AST-1038",
+      "agency_id": "ag_skyways",
+      "flight_id": "AI-111",
+      "travellers": [
+        {
+          "name": "Manav Nair",
+          "passport": "X6049101"
+        },
+        {
+          "name": "Manav Sharma",
+          "passport": "X6098175"
+        }
+      ],
+      "fare": 84000,
+      "total": 84250,
+      "status": "CONFIRMED",
+      "created": "2026-11-08T18:00:00"
+    },
+    {
+      "id": "AST-1039",
+      "agency_id": "ag_globetrek",
+      "flight_id": "UK-707",
+      "travellers": [
+        {
+          "name": "Yash Reddy",
+          "passport": "X9576076"
+        },
+        {
+          "name": "Nia Nair",
+          "passport": "X2422633"
+        }
+      ],
+      "fare": 8200,
+      "total": 8450,
+      "status": "REFUNDED",
+      "created": "2026-11-16T20:00:00"
+    },
+    {
+      "id": "AST-1040",
+      "agency_id": "ag_globetrek",
+      "flight_id": "6E-441",
+      "travellers": [
+        {
+          "name": "Neha Das",
+          "passport": "X4340845"
+        }
+      ],
+      "fare": 4800,
+      "total": 4800,
+      "status": "CONFIRMED",
+      "created": "2026-10-27T07:00:00"
+    }
+  ],
+  "coupons": [
+    {
+      "code": "FLY10",
+      "discount_pct": 10,
+      "single_use": true,
+      "status": "active"
+    },
+    {
+      "code": "WELCOME20",
+      "discount_pct": 20,
+      "single_use": true,
+      "status": "active"
+    },
+    {
+      "code": "TRAVEL5",
+      "discount_pct": 5,
+      "single_use": false,
+      "status": "active"
+    },
+    {
+      "code": "AGENT15",
+      "discount_pct": 15,
+      "single_use": false,
+      "status": "active"
+    },
+    {
+      "code": "DIWALI25",
+      "discount_pct": 25,
+      "single_use": true,
+      "status": "expired"
+    },
+    {
+      "code": "SUMMER8",
+      "discount_pct": 8,
+      "single_use": false,
+      "status": "expired"
+    }
+  ],
+  "demo_password": "Test@1234 (all test accounts, demo-only)"
+}
