@@ -9,9 +9,10 @@ Outputs (all synthetic, demo-only):
 import json
 import random
 from datetime import datetime, timedelta
+from pathlib import Path
 
 random.seed(42)
-OUT = "/home/hatch/workspace/bughunt/voyagehack/data"
+OUT = str(Path(__file__).resolve().parent)
 
 AGENCIES = [
     {"id": "ag_skyways", "name": "SkyWays Travel"},

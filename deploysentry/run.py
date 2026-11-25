@@ -189,6 +189,14 @@ def main() -> int:
                 target=opts.base_url, auto_approve=opts.auto_approve)
     reporter = Reporter(REPORTS_DIR)
 
+    # -- Seed data: the gateway log is generated, not committed --------
+    # The 30-day traffic log is deterministic (seed 42) and is
+    # regenerated on demand, so a fresh clone works without it.
+    if not (DATA_DIR / "gateway.log").exists():
+        print("Seed traffic log missing — regenerating it ...")
+        subprocess.run([sys.executable, str(DATA_DIR / "generate_seed.py")],
+                       check=True)
+
     proc = ensure_server(opts.base_url, opts.no_start)
     client = AgentClient(opts.base_url, audit, component="runner")
     gate = ApprovalGate(audit, auto_approve=opts.auto_approve)

@@ -48,6 +48,10 @@ flaw within seconds, writes ticket-ready findings to `deploysentry/reports/`,
 and retests after the fix. Without `--auto-approve`, the two risky tests are
 skipped and listed as awaiting human approval.
 
+Note: `data/gateway.log` (the 30-day traffic seed) is not committed — it is
+regenerated automatically on the first run, deterministically (seed 42), or
+by hand with `python3 data/generate_seed.py`.
+
 ## Run the checks
 
 ```bash
